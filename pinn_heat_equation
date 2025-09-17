@@ -1,0 +1,193 @@
+import torch
+
+# Check if PyTorch can access the GPU
+if torch.cuda.is_available():
+    # Get the name of the GPU
+    gpu_name = torch.cuda.get_device_name(0)
+    print(f"Success! You are connected to the GPU: {gpu_name}")
+else:
+    print("Warning: GPU not found. Please follow the steps under 'Runtime > Change runtime type' to enable the T4 GPU.")
+
+# Define a simple tensor on the GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+my_tensor = torch.tensor([[1, 2], [3, 4]], device=device)
+print("\nHere is a sample tensor created on your device:")
+print(my_tensor)
+
+import torch.nn as nn
+
+# Defining the Neural Network
+class PINN(nn.Module):
+    def __init__(self):
+        super(PINN, self).__init__()
+
+        # Define the network layers
+        self.net = nn.Sequential(
+            nn.Linear(3, 64),    # Input layer (t, x, y) -> 64 neurons
+            nn.Tanh(),
+            nn.Linear(64, 64),   # Hidden layer 1
+            nn.Tanh(),
+            nn.Linear(64, 64),   # Hidden layer 2
+            nn.Tanh(),
+            nn.Linear(64, 64),   # Hidden layer 3
+            nn.Tanh(),
+            nn.Linear(64, 64),   # Hidden layer 4
+            nn.Tanh(),
+            nn.Linear(64, 64),   # Hidden layer 5
+            nn.Tanh(),
+            nn.Linear(64, 1)     # Output layer -> u(t, x, y)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+# Defining the loss functions
+def compute_physics_loss(model, collocation_points, alpha=0.1):
+    """
+    Computes the physics-based loss (PDE residual) for the 2D heat equation.
+    """
+    # Clone the points and set requires_grad=True to compute derivatives
+    points = collocation_points.clone().detach().requires_grad_(True)
+
+    # Forward pass to get temperature prediction u
+    u = model(points)
+
+    # Compute first-order derivatives using autograd
+    grads = torch.autograd.grad(u, points, grad_outputs=torch.ones_like(u), create_graph=True)[0]
+    u_t = grads[:, 0]
+    u_x = grads[:, 1]
+    u_y = grads[:, 2]
+
+    # Compute second-order derivatives
+    u_xx = torch.autograd.grad(u_x, points, grad_outputs=torch.ones_like(u_x), create_graph=True)[0][:, 1]
+    u_yy = torch.autograd.grad(u_y, points, grad_outputs=torch.ones_like(u_y), create_graph=True)[0][:, 2]
+
+    # Calculate the PDE residual: u_t - alpha * (u_xx + u_yy)
+    pde_residual = u_t - alpha * (u_xx + u_yy)
+
+    # Return the mean squared error of the residual
+    return torch.mean(pde_residual**2)
+
+
+# Defining the data loss function
+def compute_data_loss(model, ic_points, ic_values, bc_points, bc_values):
+    """
+    Computes the data-based loss from initial and boundary conditions.
+    """
+    loss_criterion = nn.MSELoss()
+
+    # Loss on initial condition data
+    u_pred_ic = model(ic_points)
+    loss_ic = loss_criterion(u_pred_ic, ic_values)
+
+    # Loss on boundary condition data
+    u_pred_bc = model(bc_points)
+    loss_bc = loss_criterion(u_pred_bc, bc_values)
+
+    return loss_ic + loss_bc
+
+
+# Set up the training loop
+import torch
+import torch.optim as optim
+from torch.optim.lr_scheduler import StepLR
+
+# --- 1. Setup and Hyperparameters ---
+
+# Instantiate the model and move to GPU
+model = PINN()
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
+# Define the optimizer
+# Adam is a great general-purpose optimizer
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+scheduler = StepLR(optimizer, step_size=5000, gamma=0.1)
+
+# Define hyperparameters
+epochs = 10000
+alpha = 0.1   # Thermal diffusivity from the PDE
+lambda_physics = 0.01  # Weight for the physics loss
+
+
+num_points = 2000
+num_collocation_pts = 5000
+print_mod = 100
+
+# --- 2. Generate Your Training Data (as discussed before) ---
+# The domain for t is [0, 1], for x, y is [-1, 1].
+# We must scale the random numbers for x and y correctly.
+
+# Initial Condition (IC) - A hot square in the center at t=0
+ic_points_xy = (torch.rand(2000, 2, device=device) * 2) - 1 # x, y in [-1, 1]
+ic_points_t = torch.zeros(2000, 1, device=device)           # t=0
+ic_points = torch.cat([ic_points_t, ic_points_xy], dim=1)
+ic_values = torch.zeros(2000, 1, device=device)
+ic_values[(ic_points[:, 1].abs() < 0.4) & (ic_points[:, 2].abs() < 0.4)] = 1.0
+
+# Boundary Condition (BC) - Edges are kept cold (u=0)
+bc_points = torch.rand(2000, 3, device=device)
+# Scale x, y to [-1, 1] before pinning them to the boundary
+bc_points[:, 1:] = (bc_points[:, 1:] * 2) - 1
+# Randomly assign points to the four boundaries
+edge_choice = torch.randint(0, 4, (2000,))
+bc_points[edge_choice == 0, 1] = -1.0 # x = -1
+bc_points[edge_choice == 1, 1] = 1.0  # x = 1
+bc_points[edge_choice == 2, 2] = -1.0 # y = -1
+bc_points[edge_choice == 3, 2] = 1.0  # y = 1
+bc_values = torch.zeros(2000, 1, device=device)
+
+# Collocation Points for physics loss (random points in spacetime)
+collocation_points_t = torch.rand(5000, 1, device=device)                # t in [0, 1]
+collocation_points_xy = (torch.rand(5000, 2, device=device) * 2) - 1      # x, y in [-1, 1]
+collocation_points = torch.cat([collocation_points_t, collocation_points_xy], dim=1)
+
+
+# Lists to store loss history for plotting
+epoch_list = []
+total_loss_history = []
+data_loss_history = []
+physics_loss_history = []
+# --- 3. The Training Loop ---
+print("Starting training...")
+for epoch in range(epochs):
+    # Set model to training mode
+    model.train()
+
+    # Zero the gradients
+    optimizer.zero_grad()
+
+    # --- Calculate Losses ---
+
+    # Calculate data loss
+    loss_data = compute_data_loss(model, ic_points, ic_values, bc_points, bc_values)
+
+    # Calculate physics loss
+    loss_physics = compute_physics_loss(model, collocation_points, alpha)
+
+    # --- Combine Losses ---
+    # Weight the physics loss with lambda
+    total_loss = loss_data + lambda_physics * loss_physics
+
+    # --- Backpropagation and Optimization ---
+
+    # Compute gradients
+    total_loss.backward()
+
+    # Update model weights
+    optimizer.step()
+    scheduler.step()
+
+    # --- Logging ---
+    # Print progress every 1000 epochs
+    if (epoch + 1) % print_mod == 0:
+        print(f"Epoch [{epoch+1}/{epochs}], Total Loss: {total_loss.item():.4f}, Data Loss: {loss_data.item():.4f}, Physics Loss: {loss_physics.item():.4f}")
+        # Store loss values for plotting
+        epoch_list.append(epoch + 1)
+        total_loss_history.append(total_loss.item())
+        data_loss_history.append(loss_data.item())
+        physics_loss_history.append(loss_physics.item())
+
+print("Training completed.")
+
