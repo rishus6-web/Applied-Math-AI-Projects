@@ -1,11 +1,11 @@
 """
-pinn_heat_equation_polished.py
+pinn_heat_equation_cleaned.py
 
 A professional, well-structured implementation of a Physics-Informed Neural Network (PINN)
 to solve the 2D Heat Equation. This script is designed for clarity, reusability,
 and easy modification.
 
-Author: [Your Name]
+Author: Rishu Saxena
 Date: 2025-09-17
 """
 
