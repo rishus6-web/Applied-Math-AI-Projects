@@ -1,7 +1,7 @@
 """
 fdm_heat_equation_polished.py
 
-A professional, well-structured implementation of a classical Finite Difference Method (FDM)
+An implementation of a classical Finite Difference Method (FDM)
 solver for the 2D Heat Equation. This script is designed for clarity, reusability,
 and easy comparison with the PINN solver.
 
