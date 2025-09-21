@@ -1,7 +1,7 @@
 """
 fdm_heat_equation_polished.py
 
-An implementation of a classical Finite Difference Method (FDM)
+A professional, well-structured implementation of a classical Finite Difference Method (FDM)
 solver for the 2D Heat Equation. This script is designed for clarity, reusability,
 and easy comparison with the PINN solver.
 
@@ -78,7 +78,8 @@ def run_simulation(config, u, x, y):
         y (np.ndarray): The y-coordinate array.
 
     Returns:
-        tuple: Lists containing the history of the temperature field and time steps.
+        tuple: Lists containing the history of the temperature field, time steps,
+               and total heat.
     """
     dx = config.LX / (config.NX - 1)
     dy = config.LY / (config.NY - 1)
@@ -94,6 +95,7 @@ def run_simulation(config, u, x, y):
 
     u_history = [u.copy()]
     time_history = [0.0]
+    heat_history = [np.sum(u)] # Track total heat at t=0
 
     print("Starting simulation...")
     for n in range(config.NT):
@@ -107,17 +109,31 @@ def run_simulation(config, u, x, y):
         if (n + 1) % config.ANIMATION_FRAME_STEP == 0:
             u_history.append(u.copy())
             time_history.append((n + 1) * dt)
+            heat_history.append(np.sum(u)) # Track total heat at this frame
     
     print("Simulation finished.")
-    return u_history, time_history
+    return u_history, time_history, heat_history
 
-def visualize_results(config, u_history, time_history, x, y):
+def visualize_results(config, u_history, time_history, heat_history, x, y):
     """
     Generates and saves all visualizations for the FDM simulation.
     """
     print("\n--- Generating Visualizations ---")
 
-    # 1. Time Evolution Comparison Plot
+    # 1. Total Heat (Energy Conservation) Plot
+    print("Generating total heat plot...")
+    plt.figure(figsize=(10, 6))
+    plt.plot(time_history, heat_history)
+    plt.title('FDM: Total Heat vs. Time (Energy Conservation Check)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Total Heat (Sum of u over grid)')
+    plt.grid(True)
+    plt.savefig('FDM_total_heat.png')
+    plt.close()
+    print("Total heat plot saved as 'FDM_total_heat.png'")
+
+
+    # 2. Time Evolution Comparison Plot
     print("Generating time evolution plot...")
     center_idx = (np.abs(x - 0.0).argmin(), np.abs(y - 0.0).argmin())
     point1_idx = (np.abs(x - 0.5).argmin(), np.abs(y - 0.5).argmin())
@@ -140,7 +156,7 @@ def visualize_results(config, u_history, time_history, x, y):
     plt.close()
     print("Time evolution plot saved as 'FDM_time_evolution.png'")
 
-    # 2. Animation Video
+    # 3. Animation Video
     print("Generating animation...")
     fig, ax = plt.subplots(figsize=(6, 5))
     img = ax.imshow(u_history[0].T, cmap='hot', interpolation='nearest',
@@ -171,7 +187,8 @@ if __name__ == "__main__":
     u_initial, x_coords, y_coords = initialize_grid(config)
     
     # Run the simulation
-    u_frames, t_frames = run_simulation(config, u_initial, x_coords, y_coords)
+    u_frames, t_frames, heat_frames = run_simulation(config, u_initial, x_coords, y_coords)
     
     # Visualize the results
-    visualize_results(config, u_frames, t_frames, x_coords, y_coords)
+    visualize_results(config, u_frames, t_frames, heat_frames, x_coords, y_coords)
+
