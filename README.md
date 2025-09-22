@@ -1,4 +1,6 @@
 # Solvers for Partial Differential Equations: A Comparative Study of Classical and AI-Driven Methods
+
+## 1. Overview
 This repository presents a comparative study and implementation of different numerical methods for solving time-dependent partial differential equations (PDEs), 
 specifically the 2D Heat Equation. The project bridges the gap between classical, battle-tested techniques and modern, AI-driven paradigms.
 
