@@ -39,7 +39,8 @@ The primary output of the solvers is a time-evolution animation of the temperatu
  - **Boundary Conditions (t \> 0):** The four edges of the plate are held at a constant temperature of 0 for all time (Dirichlet boundary conditions).
 
  ## 4. Methodologies & Implementations
-### 4.1 Classical Solver: Finite Difference Method (FDM) This solver discretizes the continuous domain into a 51x51 grid and steps forward in time using an explicit Euler method. It's a robust, well-understood technique that provides a ground-truth solution for comparison. The implementation includes a check for the CFL stability condition to ensure the simulation remains stable.
+### 4.1 Classical Solver: 
+Finite Difference Method (FDM) This solver discretizes the continuous domain into a 51x51 grid and steps forward in time using an explicit Euler method. It's a robust, well-understood technique that provides a ground-truth solution for comparison. The implementation includes a check for the CFL stability condition to ensure the simulation remains stable.
 
 3. Classical Solver: Finite Difference Method
 
