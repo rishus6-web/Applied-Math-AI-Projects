@@ -30,7 +30,7 @@ The primary output of the solvers is a time-evolution animation of the temperatu
 
 ## 3. The Physical Problem: 2D Heat Diffusion
 
- $ \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) $  
+ $$ \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) $$
 
 
 3. Classical Solver: Finite Difference Method
