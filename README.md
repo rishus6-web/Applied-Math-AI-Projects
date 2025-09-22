@@ -36,6 +36,7 @@ The primary output of the solvers is a time-evolution animation of the temperatu
  **Initial and Boundary Conditions:**
  - **Domain:** The plate is a square from $[-1, 1]$ in both x and y.
  - **Initial Condition (t=0):** The plate is at a temperature of 0, except for a hot square region from $[-0.4, 0.4]$ in the center, which is at a temperature of 1.
+ - **Boundary Conditions (t \> 0):** The four edges of the plate are held at a constant temperature of 0 for all time (Dirichlet boundary conditions).
 
 
 3. Classical Solver: Finite Difference Method
