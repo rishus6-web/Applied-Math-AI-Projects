@@ -46,12 +46,8 @@ This solver discretizes the continuous domain into a 51x51 grid and steps forwar
 This approach uses a deep neural network to learn a continuous approximation of the solution $u(t, x, y)$. The key features are: 
 - **Mesh-Free:** The network is trained on randomly sampled collocation points, avoiding the need for a structured grid.
 - **Hybrid Loss Function:** The network is optimized by minimizing a loss function composed of two parts:
-- <!-- begin list --> 1. `loss_data`: Enforces the known initial and boundary conditions. 2. `loss_physics`: Enforces the PDE itself by using PyTorch's `autograd` to compute the derivatives and minimize the PDE residual. <!-- end list -->
-
-3. Classical Solver: Finite Difference Method
-
-   
-4. AI Solver: Physics-Informed Neural Network (PINN)
+  <!-- begin list --> 1. `loss_data`: Enforces the known initial and boundary conditions. 2. `loss_physics`: Enforces the PDE itself by using PyTorch's `autograd` to compute the derivatives and minimize the PDE residual. <!-- end list -->
+  
 
 
 5. 
