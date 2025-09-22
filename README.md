@@ -3,8 +3,11 @@ This repository presents a comparative study and implementation of different num
 specifically the 2D Heat Equation. The project bridges the gap between classical, battle-tested techniques and modern, AI-driven paradigms.
 
 The core of this work includes the following solvers:
+
    (1) A Classical Finite Difference Method (FDM) Solver, serving as a robust and verifiable baseline.
+	
    (2) An AI-Driven Physics-Informed Neural Network (PINN), which learns the continuous solution in a mesh-free domain.
+	
    (3) A Novel Spectral Physics-Informed Neural Network (SPINN), a custom-designed architecture that operates in the Fourier domain 
 
 to more efficiently handle problems with significant high-frequency components.
