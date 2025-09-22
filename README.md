@@ -33,7 +33,8 @@ The primary output of the solvers is a time-evolution animation of the temperatu
  $$ \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) $$ 
 
  where $u(t, x, y)$ is the temperature and $α$ is the thermal diffusivity.
- **Initial and Boundary Conditions:** - **Domain:** The plate is a square from $[-1, 1]$ in both x and y.
+ **Initial and Boundary Conditions:**
+ - **Domain:** The plate is a square from $[-1, 1]$ in both x and y.
 
 
 3. Classical Solver: Finite Difference Method
