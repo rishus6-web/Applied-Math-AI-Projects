@@ -35,6 +35,7 @@ The primary output of the solvers is a time-evolution animation of the temperatu
  where $u(t, x, y)$ is the temperature and $α$ is the thermal diffusivity.
  **Initial and Boundary Conditions:**
  - **Domain:** The plate is a square from $[-1, 1]$ in both x and y.
+ - **Initial Condition (t=0):** The plate is at a temperature of 0, except for a hot square region from $[-0.4, 0.4]$ in the center, which is at a temperature of 1.
 
 
 3. Classical Solver: Finite Difference Method
