@@ -15,6 +15,17 @@ to more efficiently handle problems with significant high-frequency components.
 This project showcases an end-to-end workflow, from theoretical formulation and implementation to validation and 
 comparative analysis, demonstrating a deep understanding of both the underlying physics and the associated computational methodologies.
 
+
+## 2. Visual Showcase: Simulation Results
+
+The primary output of the solvers is a time-evolution animation of the temperature field. Below are the results from the classical FDM and the AI-driven PINN solver.
+
+| **Finite Difference Method (FDM)** | **Physics-Informed Neural Network (PINN)** |
+| :--------------------------------: | :----------------------------------------: |
+| ![FDM Animation](FDM_heat_equation.gif) | ![PINN Animation](PINN_heat_equation.gif) |
+
+
+
 1. The Physical Problem: 2D Heat Diffusion
 
 
