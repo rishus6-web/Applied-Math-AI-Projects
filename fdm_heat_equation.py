@@ -1,9 +1,8 @@
 """
-fdm_heat_equation_polished.py
+fdm_heat_equation.py
 
-A professional, well-structured implementation of a classical Finite Difference Method (FDM)
-solver for the 2D Heat Equation. This script is designed for clarity, reusability,
-and easy comparison with the PINN solver.
+Implementation of a classical Finite Difference Method (FDM) solver for the 2D 
+Heat Equation. This script is designed comparison with the PINN solver.
 
 Author: Rishu Saxena
 Date: 2025-09-19
@@ -131,6 +130,13 @@ def visualize_results(config, u_history, time_history, heat_history, x, y):
     plt.savefig('FDM_total_heat.png')
     plt.close()
     print("Total heat plot saved as 'FDM_total_heat.png'")
+    try:
+      from google.colab import files
+      files.download('FDM_total_heat.png')
+    except ImportError:
+      print("\nTo display the video in a local Jupyter notebook, you might need to run:")
+      print("from IPython.display import Video")
+      print("Video('FDM_total_heat.png')")
 
 
     # 2. Time Evolution Comparison Plot
@@ -155,6 +161,13 @@ def visualize_results(config, u_history, time_history, heat_history, x, y):
     plt.savefig('FDM_time_evolution.png')
     plt.close()
     print("Time evolution plot saved as 'FDM_time_evolution.png'")
+    try:
+      from google.colab import files
+      files.download('FDM_time_evolution.png')
+    except ImportError:
+      print("\nTo display the video in a local Jupyter notebook, you might need to run:")
+      print("from IPython.display import Video")
+      print("Video('FDM_time_evolution.png')")
 
     # 3. Animation Video
     print("Generating animation...")
@@ -176,6 +189,13 @@ def visualize_results(config, u_history, time_history, heat_history, x, y):
     anim.save('FDM_heat_equation.mp4', writer='ffmpeg', fps=15)
     plt.close()
     print("Animation saved as 'FDM_heat_equation.mp4'")
+    try:
+      from google.colab import files
+      files.download('FDM_time_evolution.png')
+    except ImportError:
+      print("\nTo display the video in a local Jupyter notebook, you might need to run:")
+      print("from IPython.display import Video")
+      print("Video('FDM_time_evolution.png')")
     print("\nAll visualizations generated.")
 
 # --- 3. Main Execution Block ---
