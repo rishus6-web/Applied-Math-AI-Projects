@@ -53,6 +53,14 @@ This approach uses a deep neural network to learn a continuous approximation of 
 ## 5. Results & Comparative Analysis
 
 In this section, we validate an AI-driven solution against the classical one. 
+### 5.1: Quantitative Comparison: Time Evolution
+The temperature evolution at specific points on the plate shows a strong agreement between the two methods, validating the accuracy of the PINN.
+
+### 5.2: Diagnostic Plots: Validation & Convergence
+Both methods include diagnostic plots to verify their behavior. This comparison highlights the different validation paradigms for classical vs. AI solvers.
+- **FDM**: Energy Conservation: The plot of total heat over time shows a smooth, monotonic decrease, correctly representing the physical dissipation of energy through the cold boundaries and confirming simulation stability.
+
+- **PINN**: Loss History: The plot of the training loss shows a steady decrease over epochs, indicating that the optimization process successfully converged to a low-error solution.
 
 
 ## 6. How to Run the Code 
