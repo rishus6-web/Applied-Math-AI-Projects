@@ -52,7 +52,7 @@ This approach uses a deep neural network to learn a continuous approximation of 
 
 ## 5. Results & Comparative Analysis
 
-In this work, we validate an AI-driven solution against the classical one. 
+In this section, we validate an AI-driven solution against the classical one. 
 
 
 ## 6. How to Run the Code 
