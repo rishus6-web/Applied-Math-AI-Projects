@@ -65,6 +65,7 @@ Both methods include diagnostic plots to verify their behavior. This comparison 
 - **FDM**: Energy Conservation: The plot of total heat over time shows a smooth, monotonic decrease, correctly representing the physical dissipation of energy through the cold boundaries and confirming simulation stability.
 
 - **PINN**: Loss History: The plot of the training loss shows a steady decrease over epochs, indicating that the optimization process successfully converged to a low-error solution.
+  
 | **FDM: Total Heat (Energy check)** | **PINN: Training loss** |
 | :--------------------------------: | :----------------------------------------: |
 | !FDM_time_evolution.png | !PINN_time_evolution.png |
