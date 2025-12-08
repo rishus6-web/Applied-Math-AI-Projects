@@ -68,7 +68,7 @@ Both methods include diagnostic plots to verify their behavior. This comparison 
   
 | **FDM: Total Heat (Energy check)** | **PINN: Training loss** |
 | :--------------------------------: | :----------------------------------------: |
-| ![FDM energy check](FDM_total_heat.png) | ![PINN training loss](PINN_training_loss.png) |
+| ![FDM energy check](FDM_total_heat.png) | ![PINN training loss](PINN_loss_history.png) |
 
 
 
