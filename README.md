@@ -58,7 +58,7 @@ The temperature evolution at specific points on the plate shows a strong agreeme
 
 | **FDM: Evolution at Specific Points** | **PINN: Evolution at Specific Points** |
 | :--------------------------------: | :----------------------------------------: |
-| !FDM_time_evolution.png | !PINN_time_evolution.png |
+| ![FDM evolution](FDM_time_evolution.png) | ![PINN evolution](PINN_time_evolution.png) |
 
 ### 5.2: Diagnostic Plots: Validation & Convergence
 Both methods include diagnostic plots to verify their behavior. This comparison highlights the different validation paradigms for classical vs. AI solvers.
@@ -68,6 +68,8 @@ Both methods include diagnostic plots to verify their behavior. This comparison 
   
 | **FDM: Total Heat (Energy check)** | **PINN: Training loss** |
 | :--------------------------------: | :----------------------------------------: |
-| !FDM_time_evolution.png | !PINN_time_evolution.png |
+| ![FDM energy check](FDM_time_evolution.png) | ![PINN training loss](PINN_time_evolution.png) |
+
+
 
 ## 6. How to Run the Code 
