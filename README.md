@@ -28,15 +28,16 @@ The primary output of the solvers is a time-evolution animation of the temperatu
 
 
 
-## 3. The Physical Problem: 2D Heat Diffusion
+## 3. The Problem Statement: 
+Given a 2D metal plate where heat diffusion is governed by the heat equation:
 
  $$ \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) $$ 
 
  where $u(t, x, y)$ is the temperature and $α$ is the thermal diffusivity.
- **Initial and Boundary Conditions:**
- - **Domain:** The plate is a square from $[-1, 1]$ in both x and y.
- - **Initial Condition (t=0):** The plate is at a temperature of 0, except for a hot square region from $[-0.4, 0.4]$ in the center, which is at a temperature of 1.
- - **Boundary Conditions (t \> 0):** The four edges of the plate are held at a constant temperature of 0 for all time (Dirichlet boundary conditions).
+
+ - **The Unknown:** The theromal diffusivity  $\alpha = 0.1.$
+ - **The Observation:** Sparse temperature measurements $u(t, x, y)$ from sensirs scattered across the plate.
+ - **The Starting Point:** Initial guess of $\tilde{\alpha} = 0.5.$
 
  ## 4. Methodologies & Implementations
 ### 4.1 Classical Solver: Finite Difference Method (FDM) 
