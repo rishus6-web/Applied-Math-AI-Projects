@@ -1,17 +1,12 @@
 # Solvers for Partial Differential Equations: A Comparative Study of Classical and AI-Driven Methods
 
 ## 1. Overview
-This repository presents a comparative study and implementation of different numerical methods for solving time-dependent partial differential equations (PDEs), 
-specifically the 2D Heat Equation. The project bridges the gap between classical, battle-tested techniques and modern, AI-driven paradigms.
+This section presents a comparative study of two different distinct paradigms of solving inverse problems in partial differential equations:
 
-The core of this work includes the following solvers:
-
-   (1) A Classical Finite Difference Method (FDM) Solver, serving as a robust and verifiable baseline.
+   (1) Classical PDE Constrained Optimization: Using a Finite Difference solver with gradient descent.
 	
-   (2) An AI-Driven Physics-Informed Neural Network (PINN), which learns the continuous solution in a mesh-free domain.
+   (2) AI-Driven Physics-Informed Neural Network (PINN): Using a deep neural network to simultaneously learn the solution and the unknown parameter.
 	
-   (3) A Novel Spectral Physics-Informed Neural Network (SPINN), a custom-designed architecture that operates in the Fourier domain 
-
 to more efficiently handle problems with significant high-frequency components.
 
 This project showcases an end-to-end workflow, from theoretical formulation and implementation to validation and 
